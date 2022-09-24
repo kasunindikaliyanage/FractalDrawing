@@ -1,6 +1,5 @@
 use wgpu::util::DeviceExt;
 use winit::{
-    dpi::{LogicalSize, PhysicalSize, Size},
     event::*,
     event_loop::{ControlFlow, EventLoop},
     window::Window,
@@ -335,27 +334,35 @@ impl State {
     }
 
     fn update(&mut self) {
-        let trfm_1_translation_x = (0. + self.angle_1.sin() * 0.5) as f32;
-        let trfm_1_translation_y = (0. + self.angle_1.cos() * 0.5) as f32;
+        let trfm_1_translation_x = (0. + self.angle_1.sin() * 0.6) as f32;
+        let trfm_1_translation_y = (0. + self.angle_1.cos() * 0.6) as f32;
 
-        let trfm_2_translation_x = (trfm_1_translation_x as f64 + self.angle_2.sin() * 0.25) as f32;
-        let trfm_2_translation_y = (trfm_1_translation_y as f64 + self.angle_2.cos() * 0.25) as f32;
+        let trfm_2_translation_x = (trfm_1_translation_x as f64 + self.angle_2.sin() * 0.2) as f32;
+        let trfm_2_translation_y = (trfm_1_translation_y as f64 + self.angle_2.cos() * 0.2) as f32;
 
         let trfm_3_translation_x =
-            (trfm_1_translation_x as f64 + self.angle_3.sin() * 0.125) as f32;
+            (trfm_2_translation_x as f64 + self.angle_3.sin() * 0.066) as f32;
         let trfm_3_translation_y =
-            (trfm_1_translation_y as f64 + self.angle_3.cos() * 0.125) as f32;
+            (trfm_2_translation_y as f64 + self.angle_3.cos() * 0.066) as f32;
 
-        let trfm_4_translation_x = (trfm_1_translation_x as f64 + self.angle_4.sin() * 0.25) as f32;
-        let trfm_4_translation_y = (trfm_1_translation_y as f64 + self.angle_4.cos() * 0.25) as f32;
+        let trfm_4_translation_x =
+            (trfm_3_translation_x as f64 + self.angle_4.sin() * 0.022) as f32;
+        let trfm_4_translation_y =
+            (trfm_3_translation_y as f64 + self.angle_4.cos() * 0.022) as f32;
 
-        self.trans_x = trfm_4_translation_x;
-        self.trans_y = trfm_4_translation_y;
+        let trfm_5_translation_x =
+            (trfm_4_translation_x as f64 + self.angle_5.sin() * 0.007) as f32;
+        let trfm_5_translation_y =
+            (trfm_4_translation_y as f64 + self.angle_5.cos() * 0.007) as f32;
 
-        self.angle_1 = self.angle_1 + 0.1;
-        self.angle_2 = self.angle_2 + 0.1;
-        self.angle_3 = self.angle_3 + 0.1;
-        self.angle_4 = self.angle_4 + 0.1;
+        self.trans_x = trfm_5_translation_x;
+        self.trans_y = trfm_5_translation_y;
+
+        self.angle_1 = self.angle_1 + 0.0002;
+        self.angle_2 = self.angle_2 - 0.0010;
+        self.angle_3 = self.angle_3 + 0.0050;
+        self.angle_4 = self.angle_4 - 0.025;
+        self.angle_5 = self.angle_5 - 0.125;
     }
 
     fn render(&mut self) -> Result<(), wgpu::SurfaceError> {
@@ -370,7 +377,7 @@ impl State {
                 label: Some("Render Encoder"),
             });
 
-        if self.index % 5 == 0 {
+        if self.index % 8 == 0 {
             let mut inner_vec = vec![Vertex::new(); 10000];
 
             let constant = self.index as f32 * 0.0001;
